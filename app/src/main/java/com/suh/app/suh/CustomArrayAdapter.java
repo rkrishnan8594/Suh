@@ -25,13 +25,13 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(values[position]);
-        String s = values[position];
-        if (s.startsWith("Windows7") || s.startsWith("iPhone")
-                || s.startsWith("Solaris")) {
-            imageView.setImageResource(R.drawable.no);
+        //textView.setText(values[position].getName());
+        //Boolean avail = values[position].getAvailability();
+
+        if (true) {
+            imageView.setImageResource(R.drawable.available);
         } else {
-            imageView.setImageResource(R.drawable.ok);
+            imageView.setImageResource(R.drawable.unavailable);
         }
 
         return rowView;

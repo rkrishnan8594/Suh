@@ -14,12 +14,15 @@ public class User {
         this.available = a;
         this.id = Long.valueOf(i);
     }
+
     public String getName() {
         return name;
     }
+
     public Boolean getAvailability() {
         return available;
     }
+
     public Long getId() {
         return id;
     }

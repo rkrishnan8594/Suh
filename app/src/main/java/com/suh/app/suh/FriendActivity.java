@@ -1,6 +1,7 @@
 package com.suh.app.suh;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class FriendActivity extends Activity {
         setContentView(R.layout.activity_friends_list);
 
         String[] values = new String[] { "Rowan Krishnan", "Katya Malison", "Brooke Weil",
-                "Frankie Caiazzo", "Ubuntu" };
+                "Frankie Caiazzo", "Ming Chow" };
         Boolean[] availabilities = new Boolean[] {true, false, false, true, true};
 
         ArrayList<User> userArray = new ArrayList();
@@ -42,7 +43,5 @@ public class FriendActivity extends Activity {
                 adapter.filterUnavail();
             }
         });
-
-
     }
 }

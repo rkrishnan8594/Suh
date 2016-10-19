@@ -9,11 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ImageView;
 import java.util.ArrayList;
-//import android.widget.Filter;
-//import android.widget.Filterable;
-
-
-
 
 public class CustomListAdapter extends BaseAdapter {
     private final Context context;
@@ -21,7 +16,6 @@ public class CustomListAdapter extends BaseAdapter {
     private ArrayList<User> filter_values;
 
     public CustomListAdapter(Context context, ArrayList<User> users) {
-        //super(context, R.layout.rowlayout, values);
         this.values = users;
         this.context = context;
     }
@@ -55,8 +49,6 @@ public class CustomListAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

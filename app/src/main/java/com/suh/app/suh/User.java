@@ -6,17 +6,23 @@ package com.suh.app.suh;
 
 public class User {
     private Long id;
-    private String name;
+    private String email;
+    private String first;
+    private String last;
     private Boolean available;
+    private Boolean showLocation;
 
-    public User(String n, Boolean a, Integer i) {
-        this.name = n;
+    public User(Integer i, String e, String f, String l, Boolean a, Boolean s) {
+        this.email = e;
+        this.first = f;
+        this.last = l;
         this.available = a;
+        this.showLocation = s;
         this.id = Long.valueOf(i);
     }
 
     public String getName() {
-        return name;
+        return first + " " + last;
     }
 
     public Boolean getAvailability() {

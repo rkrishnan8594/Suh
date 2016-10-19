@@ -38,12 +38,12 @@ public class WebRequest {
             conn.setReadTimeout(15001);
             conn.setConnectTimeout(15001);
             conn.setDoInput(true);
-            conn.setDoOutput(true);
+            //conn.setDoOutput(true);
 
             if (requestmethod == POSTRequest) {
                 conn.setRequestMethod("POST");
             } else if (requestmethod == GETRequest) {
-                conn.setRequestMethod("GETRequest");
+                conn.setRequestMethod("GET");
             }
 
             if (params != null) {

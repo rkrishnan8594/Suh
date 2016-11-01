@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tabs>
+    <tab
+        id="@+id/tab_favorites"
+        icon="@drawable/ic_map"
+        title="Map"
+        barColorWhenSelected="@color/colorPrimary"/>
+    <tab
+        id="@+id/tab_nearby"
+        icon="@drawable/ic_friendlist"
+        title="Friends"
+        barColorWhenSelected="@color/colorPrimary"/>
+    <tab
+        id="@+id/tab_friends"
+        icon="@drawable/ic_userprofile"
+        title="Profile"
+        barColorWhenSelected="@color/colorPrimary"/>
+</tabs>

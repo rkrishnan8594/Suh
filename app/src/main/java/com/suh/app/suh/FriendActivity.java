@@ -1,6 +1,5 @@
 package com.suh.app.suh;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.util.ArrayList;
@@ -11,8 +10,10 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 
-public class FriendActivity extends Activity {
+public class FriendActivity extends AppCompatActivity {
     private ListView lv;
     CustomListAdapter adapter;
     ImageButton filter;
@@ -22,6 +23,8 @@ public class FriendActivity extends Activity {
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         new FetchData().execute();
     }
 

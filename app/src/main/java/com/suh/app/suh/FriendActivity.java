@@ -12,7 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+import android.support.annotation.IdRes;
+import android.content.Intent;
+
 
 public class FriendActivity extends AppCompatActivity {
     private ListView lv;
@@ -70,6 +74,17 @@ public class FriendActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     adapter.filterFriends(filtergreen = !filtergreen, filterred);
+                }
+            });
+
+            BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+            bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+                @Override
+                public void onTabSelected(@IdRes int tabId) {
+                    if (tabId == R.id.tab_profile) {
+                        Intent myIntent = new Intent(FriendActivity.this, ProfileActivity.class);
+                        startActivity(myIntent);
+                    }
                 }
             });
         }

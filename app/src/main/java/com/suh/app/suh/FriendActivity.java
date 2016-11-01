@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 public class FriendActivity extends AppCompatActivity {
     private ListView lv;
@@ -28,6 +29,7 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends_list);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        myToolbar.setTitleTextColor(android.graphics.Color.WHITE);
         new FetchData().execute();
     }
 

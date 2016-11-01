@@ -16,7 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 public class FriendActivity extends AppCompatActivity {
     private ListView lv;
     CustomListAdapter adapter;
-    ImageButton filter;
+    ImageButton filterr;
+    ImageButton filterg;
+    Boolean filterred = true;
+    Boolean filtergreen = true;
     private static String url = "http://10.0.2.2:3000/api/users";
 
     @Override
@@ -49,13 +52,22 @@ public class FriendActivity extends AppCompatActivity {
         protected void onPostExecute(Void requestresult) {
             super.onPostExecute(requestresult);
             lv = (ListView) findViewById(R.id.listview);
-            filter = (ImageButton) findViewById(R.id.button3);
+            filterr = (ImageButton) findViewById(R.id.button3);
+            filterg = (ImageButton) findViewById(R.id.button4);
+
             adapter = new CustomListAdapter(FriendActivity.this, friendList);
+
             lv.setAdapter(adapter);
-            filter.setOnClickListener(new View.OnClickListener() {
+            filterr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    adapter.filterUnavail();
+                    adapter.filterFriends(filtergreen, filterred = !filterred);
+                }
+            });
+            filterg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    adapter.filterFriends(filtergreen = !filtergreen, filterred);
                 }
             });
         }

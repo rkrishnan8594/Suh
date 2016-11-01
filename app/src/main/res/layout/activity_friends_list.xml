@@ -36,14 +36,24 @@
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="fill_parent"
-            android:layout_height="50dp" >
+            android:layout_height="50dp"
+            android:weightSum= "2" >
             <ImageButton
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/filter"
+                android:id="@+id/button4"
+                android:layout_weight="1"
+                android:src="@drawable/filter_green"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:onClick="onClickUnavail"
+                android:layout_width="wrap_content" />
+
+            <ImageButton
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/filter_red"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:id="@+id/button3" />
         </LinearLayout>
         <ListView

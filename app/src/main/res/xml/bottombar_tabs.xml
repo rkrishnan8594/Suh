@@ -2,14 +2,14 @@
 
 <tabs>
     <tab
-        id="@+id/tab_map"
-        icon="@drawable/ic_map"
-        title="Map"
-        barColorWhenSelected="@color/colorPrimary"/>
-    <tab
         id="@+id/tab_friendlist"
         icon="@drawable/ic_friendlist"
         title="Friends"
+        barColorWhenSelected="@color/colorPrimary"/>
+    <tab
+        id="@+id/tab_map"
+        icon="@drawable/ic_map"
+        title="Map"
         barColorWhenSelected="@color/colorPrimary"/>
     <tab
         id="@+id/tab_profile"

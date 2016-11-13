@@ -64,6 +64,7 @@ public class FriendActivity extends AppCompatActivity {
             adapter = new CustomListAdapter(FriendActivity.this, friendList);
 
             lv.setAdapter(adapter);
+
             filterr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,6 +84,9 @@ public class FriendActivity extends AppCompatActivity {
                 public void onTabSelected(@IdRes int tabId) {
                     if (tabId == R.id.tab_profile) {
                         Intent myIntent = new Intent(FriendActivity.this, ProfileActivity.class);
+                        startActivity(myIntent);
+                    } else   if (tabId == R.id.tab_map) {
+                       Intent myIntent = new Intent(FriendActivity.this, MapsActivity.class);
                         startActivity(myIntent);
                     }
                 }

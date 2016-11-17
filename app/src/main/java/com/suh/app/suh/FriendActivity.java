@@ -1,5 +1,6 @@
 package com.suh.app.suh;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class FriendActivity extends AppCompatActivity {
             adapter = new CustomListAdapter(FriendActivity.this, friendList);
 
             lv.setAdapter(adapter);
+
             filterr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,11 +80,15 @@ public class FriendActivity extends AppCompatActivity {
             });
 
             BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+            bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
             bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
                 @Override
                 public void onTabSelected(@IdRes int tabId) {
                     if (tabId == R.id.tab_profile) {
                         Intent myIntent = new Intent(FriendActivity.this, ProfileActivity.class);
+                        startActivity(myIntent);
+                    } else   if (tabId == R.id.tab_map) {
+                       Intent myIntent = new Intent(FriendActivity.this, MapsActivity.class);
                         startActivity(myIntent);
                     }
                 }

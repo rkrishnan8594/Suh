@@ -54,7 +54,7 @@ public class CustomListAdapter extends BaseAdapter {
         } else if (unavail){
                 filter_values = new ArrayList<User>();
                 for(User cur : all_values) {
-                    if(cur.getAvailability()) {
+                    if(!cur.getAvailability()) {
                         filter_values.add(cur);
                     }
                 }

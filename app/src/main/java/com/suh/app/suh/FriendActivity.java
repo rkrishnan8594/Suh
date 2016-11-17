@@ -1,5 +1,6 @@
 package com.suh.app.suh;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class FriendActivity extends AppCompatActivity {
             });
 
             BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+            bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
             bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
                 @Override
                 public void onTabSelected(@IdRes int tabId) {

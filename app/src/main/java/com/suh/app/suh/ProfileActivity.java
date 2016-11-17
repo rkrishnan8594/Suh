@@ -1,5 +1,6 @@
 package com.suh.app.suh;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
             bottomBar.setDefaultTab(R.id.tab_profile);
+            bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
             bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
                 @Override
                 public void onTabSelected(@IdRes int tabId) {

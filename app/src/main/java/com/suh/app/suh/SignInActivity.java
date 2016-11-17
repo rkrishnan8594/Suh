@@ -40,7 +40,6 @@ public class SignInActivity extends AppCompatActivity implements
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +111,8 @@ public class SignInActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                Intent mainPage = new Intent (SignInActivity.this, FriendActivity.class);
+                startActivity(mainPage);
             } else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]

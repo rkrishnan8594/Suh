@@ -50,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
             super.onPostExecute(requestresult);
 
             BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+            bottomBar.setDefaultTab(R.id.tab_profile);
             bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
                 @Override
                 public void onTabSelected(@IdRes int tabId) {

@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -35,6 +37,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
@@ -81,6 +84,8 @@ public class SignInActivity extends AppCompatActivity implements
             }
         };
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
     }
@@ -111,6 +116,7 @@ public class SignInActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                writeNewUser(account);
                 Intent mainPage = new Intent (SignInActivity.this, FriendActivity.class);
                 startActivity(mainPage);
             } else {
@@ -122,6 +128,12 @@ public class SignInActivity extends AppCompatActivity implements
                 // [END_EXCLUDE]
             }
         }
+    }
+
+    private void writeNewUser(GoogleSignInAccount acct) {
+        Log.d(TAG, "WRITING NEW USER");
+        User u = new User(acct.getEmail(), acct.getDisplayName(), true, false);
+        mDatabase.child("users").child(acct.getEmail().split("@")[0]).setValue(u);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -147,7 +159,6 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void signIn() {
-        Log.d(TAG, "I AM IN SIGNIN()");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

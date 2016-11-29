@@ -1,16 +1,28 @@
 package com.suh.app.suh;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import android.support.annotation.IdRes;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,12 +35,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+    private DatabaseReference mDatabase;
     private static final String TAG = "ProfileActivity";
 
     @Override
@@ -50,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -68,6 +85,79 @@ public class ProfileActivity extends AppCompatActivity implements
                 } else if (tabId == R.id.tab_map) {
                     Intent myIntent = new Intent(ProfileActivity.this, MapsActivity.class);
                     startActivity(myIntent);
+                }
+            }
+        });
+
+        setUpProfile();
+        setUpSwitchListeners();
+    }
+
+    public void setUpProfile() {
+        // Profile Photo
+        Uri photoUrl = mAuth.getCurrentUser().getPhotoUrl();
+        CircleImageView c = (CircleImageView) findViewById(R.id.profile_image);
+        Picasso.with(this).load(photoUrl).into(c);
+
+        // Switches
+        Query userQuery = mDatabase.child("users").child(mAuth.getCurrentUser().getEmail().split("@")[0]);
+
+        userQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Switch s1 = (Switch) findViewById(R.id.switch1);
+                Switch s2 = (Switch) findViewById(R.id.switch2);
+
+                if(dataSnapshot.child("isAvailable").getValue().toString() == "true") {
+                    Log.d(TAG, "AVAILABLE IS TRUE");
+                    s1.setChecked(true);
+                } else {
+                    Log.d(TAG, "AVAILABLE IS FALSE");
+                    s1.setChecked(false);
+                }
+
+                if(dataSnapshot.child("showLocation").getValue().toString() == "true") {
+                    Log.d(TAG, "LOCATION IS TRUE");
+                    s2.setChecked(true);
+                } else {
+                    Log.d(TAG, "LOCATION IS FALSE");
+                    s2.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("The read failed: " , databaseError.getMessage());
+            }
+        });
+    }
+
+    public void setUpSwitchListeners() {
+        Switch s1 = (Switch) findViewById(R.id.switch1);
+        Switch s2 = (Switch) findViewById(R.id.switch2);
+
+        s1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getEmail().split("@")[0])
+                            .child("isAvailable").setValue(true);
+                } else {
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getEmail().split("@")[0])
+                            .child("isAvailable").setValue(false);
+                }
+            }
+        });
+
+        s2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getEmail().split("@")[0])
+                            .child("showLocation").setValue(true);
+                } else {
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getEmail().split("@")[0])
+                            .child("showLocation").setValue(false);
                 }
             }
         });

@@ -23,13 +23,11 @@ public class CustomListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        System.out.println("*** 2 getCount method");
         System.out.println(filter_values.size());
         return filter_values.size();
     }
     @Override
     public Object getItem(int position) {
-        System.out.println("*** ? getItem method");
         System.out.println(filter_values.get(position));
         return filter_values.get(position);
     }
@@ -63,7 +61,7 @@ public class CustomListAdapter extends BaseAdapter {
             filter_values = new ArrayList<User>();
         }
         notifyDataSetChanged();
-        }
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

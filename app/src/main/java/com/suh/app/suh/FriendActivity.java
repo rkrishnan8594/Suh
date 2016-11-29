@@ -4,6 +4,10 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.util.Log;
@@ -13,6 +17,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import android.support.annotation.IdRes;
@@ -26,94 +38,78 @@ public class FriendActivity extends AppCompatActivity {
     ImageButton filterg;
     Boolean filterred = true;
     Boolean filtergreen = true;
-    private static String url = "http://10.0.2.2:3000/api/users";
+    private DatabaseReference mDatabase;
+    ArrayList<User> friendList;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(android.graphics.Color.WHITE);
-        new FetchData().execute();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        fetchData(mDatabase);
     }
 
-    private class FetchData extends AsyncTask<Void, Void, Void> {
-        ArrayList<User> friendList;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            WebRequest webreq = new WebRequest();
-            String jsonStr = webreq.makeWebServiceCall(url, WebRequest.GETRequest);
-            Log.d("Response: ", "> " + jsonStr);
-            friendList = ParseJSON(jsonStr);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void requestresult) {
-            super.onPostExecute(requestresult);
-            lv = (ListView) findViewById(R.id.listview);
-            filterr = (ImageButton) findViewById(R.id.button3);
-            filterg = (ImageButton) findViewById(R.id.button4);
-
-            adapter = new CustomListAdapter(FriendActivity.this, friendList);
-
-            lv.setAdapter(adapter);
-
-            filterr.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapter.filterFriends(filtergreen, filterred = !filterred);
+    public void fetchData(DatabaseReference databaseReference) {
+        Query usersQuery = databaseReference.child("users");
+        usersQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                friendList = new ArrayList<User>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    User u = child.getValue(User.class);
+                    friendList.add(u);
                 }
-            });
-            filterg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adapter.filterFriends(filtergreen = !filtergreen, filterred);
-                }
-            });
 
-            BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-            bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
-            bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-                @Override
-                public void onTabSelected(@IdRes int tabId) {
-                    if (tabId == R.id.tab_profile) {
-                        Intent myIntent = new Intent(FriendActivity.this, ProfileActivity.class);
-                        startActivity(myIntent);
-                    } else   if (tabId == R.id.tab_map) {
-                       Intent myIntent = new Intent(FriendActivity.this, MapsActivity.class);
-                        startActivity(myIntent);
-                    }
-                }
-            });
-        }
-    }
-
-    private ArrayList<User> ParseJSON(String json) {
-        if (json != null) {
-            try {
-                ArrayList<User> friendList = new ArrayList();
-                JSONArray friendsArr = new JSONArray(json);
-                for(int i = 0; i < friendsArr.length(); i++) {
-                    JSONObject row = friendsArr.getJSONObject(i);
-                    friendList.add(new User(row.getInt("id"), row.getString("email"),
-                            row.getString("first"), row.getString("last"), row.getBoolean("free"),
-                            row.getBoolean("showLocation")));
-                }
-                return friendList;
-            } catch(JSONException e) {
-                Log.e("MYAPP", "unexpected JSON exception", e);
+                renderView();
             }
-        } else {
-            System.out.println("Null JSON");
-        }
-        return null;
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("The read failed: " , databaseError.getMessage());
+            }
+        });
+    }
+
+    public void renderView() {
+        lv = (ListView) findViewById(R.id.listview);
+        filterr = (ImageButton) findViewById(R.id.button3);
+        filterg = (ImageButton) findViewById(R.id.button4);
+
+        adapter = new CustomListAdapter(FriendActivity.this, friendList);
+
+        lv.setAdapter(adapter);
+
+        filterr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.filterFriends(filtergreen, filterred = !filterred);
+            }
+        });
+        filterg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.filterFriends(filtergreen = !filtergreen, filterred);
+            }
+        });
+
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab_profile) {
+                    Intent myIntent = new Intent(FriendActivity.this, ProfileActivity.class);
+                    startActivity(myIntent);
+                } else   if (tabId == R.id.tab_map) {
+                    Intent myIntent = new Intent(FriendActivity.this, MapsActivity.class);
+                    startActivity(myIntent);
+                }
+            }
+        });
     }
 }

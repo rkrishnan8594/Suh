@@ -58,10 +58,19 @@
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
     <Button
+        android:text="Sign Out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:id="@+id/sign_out_button"
+        android:layout_below="@+id/switch2"
+        android:layout_centerHorizontal="true" />
+
+    <!--<Button
         android:id="@+id/sign_out_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/sign_out"
-        android:theme="@style/ThemeOverlay.MyDarkButton" />
+        android:theme="@style/ThemeOverlay.MyDarkButton" />-->
 </RelativeLayout>

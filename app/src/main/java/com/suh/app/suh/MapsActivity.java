@@ -1,7 +1,12 @@
 package com.suh.app.suh;
 
+import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.graphics.Color;
+import android.support.v7.widget.Toolbar;
+
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,6 +14,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -22,6 +30,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Wer dey at tho?");
+
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setDefaultTab(R.id.tab_map);
+        bottomBar.setInActiveTabColor(Color.parseColor("#b498f6"));
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab_friendlist) {
+                    Intent myIntent = new Intent(MapsActivity.this, FriendActivity.class);
+                    startActivity(myIntent);
+                } else if (tabId == R.id.tab_profile) {
+                    Intent myIntent = new Intent(MapsActivity.this, ProfileActivity.class);
+                    startActivity(myIntent);
+                }
+            }
+        });
     }
 
 

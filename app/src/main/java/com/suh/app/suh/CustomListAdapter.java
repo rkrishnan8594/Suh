@@ -23,13 +23,11 @@ public class CustomListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        System.out.println("*** 2 getCount method");
         System.out.println(filter_values.size());
         return filter_values.size();
     }
     @Override
     public Object getItem(int position) {
-        System.out.println("*** ? getItem method");
         System.out.println(filter_values.get(position));
         return filter_values.get(position);
     }
@@ -37,8 +35,9 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         System.out.println("*** 3 getItemId method");
-        System.out.println(filter_values.get(position).getId());
-        return filter_values.get(position).getId();
+        //System.out.println(filter_values.get(position).getId());
+        //return filter_values.get(position).getId();
+        return 5;
     }
 
     public void filterFriends(Boolean avail, Boolean unavail) {
@@ -47,14 +46,14 @@ public class CustomListAdapter extends BaseAdapter {
         } else if (avail) {
             filter_values = new ArrayList<User>();
             for (User cur : all_values) {
-                if (cur.getAvailability()) {
+                if (cur.getIsAvailable()) {
                     filter_values.add(cur);
                 }
             }
         } else if (unavail){
                 filter_values = new ArrayList<User>();
                 for(User cur : all_values) {
-                    if(cur.getAvailability()) {
+                    if(!cur.getIsAvailable()) {
                         filter_values.add(cur);
                     }
                 }
@@ -62,7 +61,7 @@ public class CustomListAdapter extends BaseAdapter {
             filter_values = new ArrayList<User>();
         }
         notifyDataSetChanged();
-        }
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -72,7 +71,7 @@ public class CustomListAdapter extends BaseAdapter {
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         textView.setText(filter_values.get(position).getName());
-        Boolean avail = filter_values.get(position).getAvailability();
+        Boolean avail = filter_values.get(position).getIsAvailable();
 
         if (avail) {
             imageView.setImageResource(R.drawable.available);

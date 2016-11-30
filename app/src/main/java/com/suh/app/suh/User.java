@@ -5,31 +5,29 @@ package com.suh.app.suh;
  */
 
 public class User {
-    private Long id;
     private String email;
-    private String first;
-    private String last;
-    private Boolean available;
+    private String name;
+    private Boolean isAvailable;
     private Boolean showLocation;
 
-    public User(Integer i, String e, String f, String l, Boolean a, Boolean s) {
+    private User() {}
+
+    public User(String e, String n, Boolean a, Boolean s) {
         this.email = e;
-        this.first = f;
-        this.last = l;
-        this.available = a;
+        this.name = n;
+        this.isAvailable = a;
         this.showLocation = s;
-        this.id = Long.valueOf(i);
     }
+
+    public String getEmail() { return email; }
+
+    public Boolean getShowLocation() { return showLocation; }
 
     public String getName() {
-        return first + " " + last;
+        return name;
     }
 
-    public Boolean getAvailability() {
-        return available;
-    }
-
-    public Long getId() {
-        return id;
+    public Boolean getIsAvailable() {
+        return isAvailable;
     }
 }

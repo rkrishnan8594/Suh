@@ -26,8 +26,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -132,8 +135,22 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void writeNewUser(GoogleSignInAccount acct) {
         Log.d(TAG, "WRITING NEW USER");
-        User u = new User(acct.getEmail(), acct.getDisplayName(), true, false);
-        mDatabase.child("users").child(acct.getEmail().split("@")[0]).setValue(u);
+        final String email = acct.getEmail();
+        final String name = acct.getDisplayName();
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child("users").hasChild(email.split("@")[0])) {
+                    User u = new User(email, name, true, false);
+                    mDatabase.child("users").child(email.split("@")[0]).setValue(u);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("The read failed: " , databaseError.getMessage());
+            }
+        });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
